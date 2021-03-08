@@ -19,32 +19,27 @@ class CategoriasRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorias::class);
     }
 
-    // /**
-    //  * @return Categorias[] Returns an array of Categorias objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllFinal()
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('c.final = :val')
+            ->setParameter('val', 1)
+            ->orderBy('c.nombre', 'ASC')
+            ->setMaxResults(100)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Categorias
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+    
+    public function eliminarArbol($id){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $SQL  = "UPDATE categorias SET eliminado = 1 WHERE id = ".$id." OR grupo_id LIKE '%".$id."%'";
+
+        $stmt = $conn->prepare($SQL);
+        $stmt->execute();
+        
+        return $id;
     }
-    */
 }
