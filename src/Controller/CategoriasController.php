@@ -28,11 +28,14 @@ class CategoriasController extends AbstractController
     public function listado(CategoriasRepository $categoriasRepository): Response
     {
         $categorias = Array();
-        $i = 0;
+        $categorias[0]['id'] = 0;
+        $categorias[0]['nombre'] = 'Nueva categoría';
+        $categorias[0]['padre'] = 0;
+        $i = 1;
         foreach($categoriasRepository->findBy(array('eliminado' => 0), array('padre' => 'ASC', 'nombre' => 'ASC')) as $c){
             $categorias[$i]['id'] = $c->getId();
             $categorias[$i]['nombre'] = $c->getNombre();
-            $categorias[$i]['idPadre'] = $c->getPadre();
+            $categorias[$i]['padre'] = $c->getPadre();
             $i++;
         }
 
@@ -47,10 +50,13 @@ class CategoriasController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         if ($this->isCsrfTokenValid('nueva_categoria', $request->request->get('_token'))) {
             $padre = $entityManager->getRepository(Categorias::class)->find($request->request->get('padre'));
+
+            $grupoId = ($padre !== null) ? $padre->getGrupo() : 0;
+
             $categoria = new Categorias();
             $categoria->setNombre($request->request->get('categoria'));
             $categoria->setPadre($request->request->get('padre'));
-            $categoria->setGrupo($padre->getGrupo().'|'.$request->request->get('padre'));
+            $categoria->setGrupo($grupoId.'|'.$request->request->get('padre'));
             $categoria->setHabilitado(1);
             $categoria->setEliminado(0);
 

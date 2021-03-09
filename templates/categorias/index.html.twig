@@ -1,43 +1,153 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Categorias index{% endblock %}
+{% block title %}Categorias - {% endblock %}
 
-{% block body %}
-    <h1>Categorias index</h1>
+{% block rutas %}Categorias{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Padre</th>
-                <th>Grupo</th>
-                <th>Habilitado</th>
-                <th>Eliminado</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for categoria in categorias %}
-            <tr>
-                <td>{{ categoria.id }}</td>
-                <td>{{ categoria.nombre }}</td>
-                <td>{{ categoria.padre }}</td>
-                <td>{{ categoria.grupo }}</td>
-                <td>{{ categoria.habilitado }}</td>
-                <td>{{ categoria.eliminado }}</td>
-                <td>
-                    <a href="{{ path('categorias_show', {'id': categoria.id}) }}">show</a>
-                    <a href="{{ path('categorias_edit', {'id': categoria.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block contenido %}
 
-    <a href="{{ path('categorias_new') }}">Create new</a>
+    <h1>Categorías</h1>
+
+    <div class='contenedorCategorias' id='contCat_0'>
+        <!-- ACÁ SE LISTAN TODAS ALS CATEGORÍAS -->
+    </div>
+
+    <input type="hidden" id="_token" name="_token" value="{{ csrf_token('nueva_categoria') }}">
+    <input type="hidden" id="_token_eliminar" name="_token_eliminar" value="{{ csrf_token('eliminar_categoria') }}">
+
+    <script>
+        function getCategorias(){
+            fetch("{{ path('categorias_listado') }}", {
+                method: 'post',
+                mode: 'cors',
+                credentials: 'same-origin'
+            }).then(function(response){
+                return response.json();
+            }).then(function(ccc){
+                document.getElementById("contCat_0").innerHTML = '';
+                ccc.forEach(armarArbol);
+            }).catch(function(error){
+                console.error('ERROR:', error);
+            });
+        }
+
+        function armarArbol(item, index){
+            let divCont = document.createElement('div');
+            divCont.classList.add('contenedorCategorias');
+            divCont.setAttribute("id", "contCat_"+item.id);
+
+            let divCat = document.createElement('div');
+
+            let agregar = document.createElement('img');
+            agregar.setAttribute("src", "{{asset('images/iconos/nuevo.png')}}");
+            agregar.setAttribute("title", "Agregar sub categoría");
+            agregar.setAttribute("data-id", item.id);
+            agregar.onclick = function () {
+                agregarCategoria(this);
+            };
+
+            let eliminar = document.createElement('img');
+            eliminar.setAttribute("src", "{{asset('images/iconos/borrar_rojo.svg')}}");
+            eliminar.setAttribute("title", "Eliminar categoría");
+            eliminar.setAttribute("data-id", item.id);
+            eliminar.onclick = function () {
+                eliminarCategoria(this);
+            };
+            
+            
+            divCat.innerHTML = item.nombre;
+            divCat.prepend(agregar);
+            divCat.append(eliminar);
+
+            divCont.prepend(divCat);
+            
+            document.getElementById("contCat_"+item.padre).appendChild(divCont);
+        }
+
+        function agregarCategoria(self){
+            cancelarNuevaCategoria();
+
+            let divCont = document.createElement('div');
+            divCont.setAttribute("id", "contNuevaCategoria");
+
+            let inputCategoria = document.createElement('input');
+            inputCategoria.setAttribute("type", "text");
+            inputCategoria.setAttribute("id", "nuevaCategoria");
+            inputCategoria.setAttribute("data-padre", self.dataset.id);
+
+            let guardar = document.createElement('img');
+            guardar.setAttribute("src", "{{asset('images/iconos/guardar.svg')}}");
+            guardar.setAttribute("title", "Guardar");
+            guardar.onclick = function () {
+                guardarNuevaCategoria();
+            };
+
+            let cancelar = document.createElement('img');
+            cancelar.setAttribute("src", "{{asset('images/iconos/cancelar.svg')}}");
+            cancelar.setAttribute("title", "Cancelar");
+            cancelar.onclick = function () {
+                cancelarNuevaCategoria();
+            };
+
+            divCont.append(inputCategoria);
+            divCont.append(guardar);
+            divCont.append(cancelar);
+
+            self.parentElement.append(divCont);
+        }
+
+        function cancelarNuevaCategoria(){
+            if(document.getElementById('contNuevaCategoria') !== null)
+                document.getElementById('contNuevaCategoria').remove();
+        }
+
+        function guardarNuevaCategoria(){
+            if(document.getElementById('nuevaCategoria').value != ''){
+                let formData = new FormData();
+                formData.append("padre", document.getElementById('nuevaCategoria').dataset.padre);
+                formData.append("categoria", document.getElementById('nuevaCategoria').value);
+                formData.append("_token", document.getElementById('_token').value);
+
+                fetch("{{ path('categorias_nueva') }}", {
+                    method: 'post',
+                    mode: 'cors',
+                    credentials: 'same-origin',
+                    body: formData
+                }).then(function(response){
+                    return response.json();
+                }).then(function(json){
+                    getCategorias();
+                }).catch(function(error){
+                    console.error('ERROR:', error);
+                });
+            }
+        }
+        
+        function eliminarCategoria(self){
+            if(confirm("Seguro que desea eliminar esta categoría?\nTodas las subcategorías también van a ser eliminadas")){
+                let formData = new FormData();
+                formData.append("id", self.dataset.id);
+                formData.append("eliminar_categoria", document.getElementById('_token_eliminar').value);
+
+                fetch("{{ path('categorias_delete') }}", {
+                    method: 'post',
+                    mode: 'cors',
+                    credentials: 'same-origin',
+                    body: formData
+                }).then(function(response){
+                    return response.json();
+                }).then(function(json){
+                    getCategorias();
+                }).catch(function(error){
+                    console.error('ERROR:', error);
+                });
+            }
+        }
+
+        getCategorias();
+
+
+
+    </script>
+
 {% endblock %}
