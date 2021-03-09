@@ -17,7 +17,7 @@ class CategoriasController extends AbstractController
     /**
      * @Route("/", name="categorias_index", methods={"GET"})
      */
-    public function index(CategoriasRepository $categoriasRepository): Response
+    public function index(): Response
     {
         return $this->render('categorias/index.html.twig');
     }
@@ -64,11 +64,10 @@ class CategoriasController extends AbstractController
     /**
      * @Route("/eliminar", name="categorias_delete", methods={"POST"})
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request, CategoriasRepository $categoriasRepository): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
         if ($this->isCsrfTokenValid('eliminar_categoria', $request->request->get('eliminar_categoria'))) {
-            $categoria = $entityManager->getRepository(Categorias::class)->eliminarArbol($request->request->get('id'));
+            $categoria = $categoriasRepository->eliminarArbol($request->request->get('id'));
 
             return $this->json($categoria);
         }

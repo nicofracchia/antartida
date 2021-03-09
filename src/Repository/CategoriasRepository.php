@@ -18,19 +18,6 @@ class CategoriasRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Categorias::class);
     }
-
-    public function findAllFinal()
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.final = :val')
-            ->setParameter('val', 1)
-            ->orderBy('c.nombre', 'ASC')
-            ->setMaxResults(100)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     
     public function eliminarArbol($id){
         $conn = $this->getEntityManager()->getConnection();

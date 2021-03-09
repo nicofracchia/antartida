@@ -1,9 +1,13 @@
+{%
+    set NOMBRE_EMPRESA = "Ferretería Antártida"
+%}
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <link rel="shortcut icon" type="images/png" href="{{asset('images/logo.png')}}">
-        <title>FERRETERIA ANTARTIDA{% block title %}{% endblock %}</title>
+        <title>{{ NOMBRE_EMPRESA }}{% block title %}{% endblock %}</title>
         <link type="text/css" rel="stylesheet" href="{{asset('css/estilos.css')}}">
         <script src="{{asset('js/oGenerales.js')}}"></script>
     </head>
@@ -15,31 +19,29 @@
                 <div class="logOut"><a href="{{ path('app_logout') }}">Cerrar sesión</a></div>
             {% endif %}
         </header>
-        {% if app.user %}
-            <div id="rutas">{% block rutas %}<span>Home</span>{% endblock %}</div>
-            <div id="pestanias">{% block pestanias %}{% endblock %}</div>
-            <section>
-                <nav>
-                    <a href='{{ path('categorias_index') }}'>
-                        <img src='{{ asset('images/iconos/menu/categorias.svg')}}' alt='Categorías' />
-                        CATEGORÍAS
-                    </a>
-                    <a href={{ path('usuarios_index') }}>
-                        <img src='{{ asset('images/iconos/menu/usuarios_off.png')}}' alt='Usuarios' />
-                        USUARIOS
-                    </a>
-                    <a href='{{ path('productos_index') }}'>
-                        <img src='{{ asset('images/iconos/menu/productos_off.png')}}' alt='Productos' />
-                        PRODUCTOS
-                    </a>
-                </nav>
-                <div id="container">
-                    {% block contenido %}Bienvenido al sistema de Ferretería Antártida{% endblock %}
-                </div>
-            </section>
-        {% else %}
-            {% block loginFrm %}{% endblock %}
-        {% endif %}
+        <div id="rutas">{% block rutas %}<span>Home</span>{% endblock %}</div>
+        <div id="pestanias">{% block pestanias %}{% endblock %}</div>
+        <section>
+            <nav>
+                <a href='{{ path('categorias_index') }}'>
+                    <img src='{{ asset('images/iconos/menu/categorias.svg')}}' alt='Categorías' />
+                    CATEGORÍAS
+                </a>
+                {#}
+                <a href={{ path('usuarios_index') }}>
+                    <img src='{{ asset('images/iconos/menu/usuarios_off.png')}}' alt='Usuarios' />
+                    USUARIOS
+                </a>
+                <a href='{{ path('productos_index') }}'>
+                    <img src='{{ asset('images/iconos/menu/productos_off.png')}}' alt='Productos' />
+                    PRODUCTOS
+                </a>
+                {#}
+            </nav>
+            <div id="container">
+                {% block contenido %}Bienvenido al sistema de Ferretería Antártida{% endblock %}
+            </div>
+        </section>
         <footer>
             Ferretería Antártida | &copy; Todos los derechos reservados - 2021
         </footer>
