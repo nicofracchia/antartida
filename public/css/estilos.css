@@ -1,0 +1,861 @@
+/***** VARIABLES *****/
+:root{
+    --color1:#fe9629;
+    --color2:#ff3a10;
+    --negro:#2f2f31;
+	--blanco:#FFFFFF;
+	--color1op: #fe962994;
+	--verde: #0baf0f;
+	--celeste: #46b7b5;
+}
+
+/***** FUENTES *****/
+@font-face{
+	font-family:'Myriad-Light';
+	src:url(MyriadPro-Light.otf)
+}
+@font-face{
+	font-family:'Myriad-Regular';
+	src:url(MYRIADPRO-REGULAR.OTF)
+}
+@font-face{
+	font-family:'Myriad-Black';
+	src:url(MYRIADPRO-BOLD.OTF)
+}
+
+/***** GENERALES  *****/
+html,
+body{
+	margin:0;
+	padding:0;
+	overflow-x:hidden;
+}
+body{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+}
+
+*{
+	font-family: Myriad-Regular;
+	box-sizing:border-box;
+	text-decoration:none;
+	color: inherit;
+	font-style: normal;
+	text-size-adjust:none;
+}
+
+.btnCancelar{
+	font-size: 1vmax;
+	font-weight: normal;
+	color: var(--blanco);
+	border: none;
+	background: var(--negro);
+	border-radius: 5px;
+	padding: 0.3vmax 2vmax;
+	cursor:pointer;
+}
+.btnGuardar{
+	font-size: 1vmax;
+	font-weight: normal;
+	color: var(--blanco);
+	border: none;
+	background: var(--verde);
+	border-radius: 5px;
+	padding: 0.3vmax 2vmax;
+	cursor:pointer;
+}
+.btnEliminar{
+	font-size: 1vmax;
+	font-weight: normal;
+	color: var(--blanco);
+	border: none;
+	background: var(--color2);
+	border-radius: 5px;
+	padding: 0.3vmax 2vmax;
+	cursor:pointer;
+}
+
+/***** BARRA SCROLL *****/
+::-webkit-scrollbar {
+    width: 0.3vw;
+}
+::-webkit-scrollbar-track {
+    background: #EEEEEE; 
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color1);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color1op); 
+}
+
+/****** HEADER ******/
+header{
+	display:flex;
+	width:100%;
+	justify-content:space-between;
+	background: var(--color1);
+	color: var(--blanco);
+}
+header .logo{
+	padding-left:3vw;
+}
+header .logo img{
+	width:8vw;
+}
+header .saludo{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+header .logOut{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-right:3vw;
+}
+
+/****** FOOTER ******/
+footer{
+	margin-top:2vh;
+	width: 100%;
+    background: var(--color2);
+    color: var(--blanco);
+	text-align: center;
+}
+
+/****** RUTAS ******/
+#rutas{
+	width:100%;
+	padding:2vh 20vw;
+	color: var(--negro);
+}
+#rutas span{
+	color:var(--color2);
+}
+
+/****** SECTION GENERAL ******/
+section{
+	display:flex;
+	justify-content: space-between;
+	width:100%;
+}
+
+/****** MENU ******/
+section nav{
+	display: flex;
+	flex-direction: column;
+	width:17vw;
+}
+section nav a{
+	color:var(--blanco);
+	background:var(--negro);
+	border-top-right-radius:10px;
+	border-bottom-right-radius:10px;
+	padding:0.605vw;
+	font-size:1vmax;
+	margin-bottom:1vh;
+	transition:0.3s;
+}
+section nav a:hover{
+	background:var(--color1);
+}
+section nav a img{
+	height: 1.5vmax;
+    vertical-align: bottom;
+	margin-right: 1vmax;
+}
+
+/****** CONTAINER PRINCIPAL ******/
+#container{
+	width:80%;
+	margin-right:1.5%;
+	border:solid 2px var(--color1);
+	border-radius:20px;
+	padding:2vmax;
+}
+
+/****** TABLAS LISTADOS ******/
+.tablaListados{
+	width: 100%;
+    border: solid 1px var(--negro);
+	border-spacing: 0;
+	border-radius: 10px;
+	overflow:hidden;
+}
+.tablaListados thead tr th{
+	border-bottom: solid 1px var(--negro);
+	text-align: left;
+}
+.tablaListados th,
+.tablaListados td{
+	padding:0.6vmax 0.3vmax;
+	color:var(--negro);
+	transition:0.3s;
+}
+.tablaListados tr:hover td{
+	background: var(--color1op);
+}
+.tablaListados td img{
+	margin-right:1vmax;
+}
+.tablaListados tfoot td{
+	border-top:solid 1px #000;
+	font-weight:bold;
+}
+.tablaProductosAsignados{
+	width: 100%;
+    border: solid 1px var(--negro);
+	border-spacing: 0;
+	border-radius: 10px;
+	overflow:hidden;
+}
+.tablaProductosAsignados thead tr th{
+	border-bottom: solid 1px var(--negro);
+	text-align: left;
+}
+.tablaProductosAsignados th,
+.tablaProductosAsignados td{
+	padding:0.6vmax 0.3vmax;
+	color:var(--negro);
+	transition:0.3s;
+}
+.tablaProductosAsignados tr:hover td{
+	background: var(--color1op);
+}
+.tablaProductosAsignados td img{
+	margin-right:1vmax;
+}
+#container form:first-of-type div:first-of-type div .tablaProductosAsignados tbody td input[type=number]{
+	padding:0 0.5vmax;
+	width:4vmax;
+}
+#container form:first-of-type div:first-of-type div .tablaProductosAsignados .actions img{
+	cursor:pointer;
+	margin:0;
+	display:table-cell !important;
+}
+.tablaProductosAsignados tfoot td{
+	border-top:solid 1px #000;
+	font-weight:bold;
+}
+
+/******* FILTROS *******/
+.contenedorFiltros{
+	display:flex;
+	width:100%;
+	padding:1vmax 0;
+	justify-content: space-between;
+}
+.contenedorFiltros .filtros{
+	text-align:right;
+	
+}
+.contenedorFiltros .filtros input[type=text]{
+	font-size: 0.7vmax;
+    color: var(--negro);
+    border: solid 1px var(--color1);
+    padding: 0.5vmax;
+    border-radius: 10px;
+	resize: none;
+	margin-right:1vmax;
+}
+.contenedorFiltros .filtros button{
+	font-size: 0.7vmax;
+	color: var(--blanco);
+	background: var(--color1);
+    border: none;
+    padding: 0.5vmax 1vmax;
+    border-radius: 10px;
+}
+.contenedorFiltros .filtros .vaciarFiltros{
+	font-size: 0.9vmax;
+	color: var(--color2);
+	text-decoration:underline;
+	margin-left:1vmax;
+}
+
+/****** PESTAÑAS ******/
+#pestanias{
+	padding-left:20vw;
+	width:97vw;
+}
+#pestanias a{
+	position:relative;
+	display: inline-block;
+	background: var(--negro);
+	padding: 0.5vmax 1vmax;
+	color:var(--blanco);
+	border-bottom:none;
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+	margin:0;
+	margin-bottom:-2px;
+	z-index:1;
+}
+#pestanias .actual{
+	background: var(--color2);
+}
+#pestanias .btnVolver{
+	padding: 0;
+    background: none;
+    float: right;
+}
+
+/***** FORMULARIOS *****/
+#container h1,
+#container h2{
+	font-size:1vmax;
+	margin:0;
+	color:var(--negro);
+	font-family: Myriad-Regular;
+}
+#container h2{
+	margin-top:2vmax;
+	margin-bottom:1vmax;
+}
+#container form:first-of-type div:first-of-type{
+	width:100%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+#container form:first-of-type div:first-of-type div{
+	position:relative;
+	width:30%;
+	display: flex;
+	justify-content: unset;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+#container form:first-of-type div:first-of-type div label{
+	font-size: 1vmax;
+	color:var(--negro);
+	margin-bottom:1vmax;
+	margin-top:2vmax;
+}
+#container form:first-of-type div:first-of-type div input[type=text],
+#container form:first-of-type div:first-of-type div input[type=date],
+#container form:first-of-type div:first-of-type div input[type=password],
+#container form:first-of-type div:first-of-type div input[type=number],
+#container form:first-of-type div:first-of-type div select,
+#container form:first-of-type div:first-of-type div textarea{
+	font-size: 1vmax;
+	color:var(--negro);
+	border:solid 1px var(--color1);
+	padding:0.5vmax;
+	border-radius:10px;
+	resize:none;
+}
+#container form:first-of-type div:first-of-type div input[type=date]{
+	position:relative;
+}
+#container form:first-of-type div:first-of-type div input[type=date]:after{
+	content: attr(data-formateado);
+	position: absolute;
+	top: calc(0.5vmax + 1px);
+	left: 0.5vmax;
+	bottom: 1px;
+	width: 70%;
+	background: #FFFFFF;
+}
+#container form:first-of-type .contCheckBox{
+	width: 100% !important;
+	flex-direction: row !important;
+}
+#container form:first-of-type .contCheckBox input{
+	width: 1vmax;
+	height: 1vmax;
+}
+#container form:first-of-type .contCheckBox label{
+	margin:0 0.5vmax !important;
+}
+#productos_categoria .labelCategoriaPadre{
+	color:var(--color1);
+}
+#productos_categoria option{
+	color:var(--negro);
+}
+.infoFrm{
+	flex-direction: row;
+	padding:2vmax;
+}
+.infoFrm p{
+	width:100%;
+	margin:0;
+	margin-top:0.3vmax;
+}
+.botonesFormularios{
+	padding: 2vmax 0;
+}
+.botonesFormularios a,
+.botonesFormularios button{
+	margin-right:1vmax;
+}
+.separador{
+	width:100%;
+	margin:1vmax 0;
+	height:1px;
+	background: var(--color1);
+}
+
+/***** ASIGNACION DE PRODUCTOS EN FORMULARIOS *****/
+.contenedor_productos{
+	display:flex;
+	flex-wrap:wrap;
+	flex-direction: column;
+	width:100%;
+	margin-top:2vmax;
+	padding-top:2vmax;
+}
+.contenedor_productos_2columnas{
+	display:flex;
+	flex-wrap:wrap;
+	width:100%;
+	justify-content: space-between;
+}
+.contenedor_productos_2columnas .contenedor_productos{
+	width: 47%;
+	margin-top:0;
+	padding-top:0;
+}
+/*.contenedor_buscador{}*/
+.filtros{
+	width:100% !important;
+	flex-direction: row !important;
+	margin-top: 1vmax;
+	justify-content: flex-start !important;
+}
+.filtros input[type=text],
+.contenedor_productos input[type=number]{
+	font-size: 0.7vmax !important;;
+	padding: 0.3vmax 0.5vmax !important;
+	margin-right:0.3vmax;
+	border:solid 1px var(--color1);
+	border-radius:10px;
+}
+.filtros button{
+	color:var(--blanco);
+	background: var(--color1);
+	border:none;
+	border-radius:10px;
+	padding: 0.3vmax 0.8vmax !important;
+	cursor:pointer;
+}
+.contenedor_buscador .listado_productos_asignar{
+	width:100% !important;
+	max-height:50vh;
+	overflow:auto;
+}
+.tabla_productos_asignar{
+	width:100% !important;
+	font-size:0.9vmax;
+	text-align: center;
+	margin:1vmax 0;
+	border-collapse: collapse;
+}
+.tabla_productos_asignar th{
+	border-bottom:solid 1px var(--negro);
+	padding:0.3vmax;
+}
+.tabla_productos_asignar td{
+	padding:0.3vmax;
+	transition:0.3s;
+}
+.tabla_productos_asignar tr:hover td{
+	background: var(--color1op);
+}
+.acciones{
+	display:flex !important;
+	flex-direction: row !important;
+}
+.contenedor_buscador .listado_productos_asignar .tabla_productos_asignar .acciones input,
+.contenedor_productos input{
+	width:5vmax;
+}
+.contenedor_buscador .listado_productos_asignar .tabla_productos_asignar .acciones img,
+.contenedor_productos img{
+	transform: rotate(90deg);
+	cursor:pointer;
+}
+.contenedor_asignados{
+	margin-bottom:2vmax;
+	padding-bottom:2vmax;
+	border-bottom: solid 1px var(--negro);
+}
+.contenedor_asignados .tabla_asignados{
+	width:70% !important;
+}
+.contenedor_productos_2columnas .contenedor_asignados .tabla_asignados{
+	width:100% !important;
+}
+.contenedor_asignados .datos_asignados{
+	padding-top:1vmax;
+}
+.contenedor_asignados .datos_asignados div{
+	padding-left:1vmax;
+	width:100% !important;
+}
+.contenedor_asignados .datos_asignados div span{
+	color:var(--color1);
+	font-size:1vmax;
+}
+.contenedor_asignados .datos_asignados div label{
+	margin:0.5vmax 0 !important;
+}
+.productoAsignadoListados{
+	transform: rotate(-90deg);
+	background: url(../images/iconos/volver.png);
+	cursor: pointer;
+	color: transparent !important;
+	width: 1.5vmax;
+	height: 1.5vmax;
+	border: none !important;
+	background-size: cover;
+}
+.contenedor_productos_2columnas #listado_productos_asignar img{
+	transform: rotate(180deg);
+}
+.contenedor_productos_2columnas .contenedor_buscador .listado_productos_asignar .tabla_productos_asignar .acciones img,
+.contenedor_productos_2columnas .contenedor_productos img{
+	transform: rotate(0deg);
+}
+.ocultoEditar{
+	display:none;
+}
+
+/***** TABLA DE VENTAS PAGOS *****/
+.tablaListadoPagosVenta{
+	font-size:1vmax;
+}
+.tablaListadoPagosVenta td{
+	padding:0.2vmax 1vmax;
+}
+
+/***** LISTADOS DE BUSCADORES *****/
+#container form:first-of-type div:first-of-type .modalResultadosBuscador{
+	display: none;
+	position: absolute;
+	background: #FFF;
+    border: solid 1px #CCC;
+    padding: 0.3vmax;
+    border-radius: 10px;
+    left: 0;
+    top: 7vmax;
+    width: 100%;
+    max-height: 30vh;
+    overflow: auto;
+	flex-direction: row;
+	z-index: 100;
+}
+#container form:first-of-type div:first-of-type .modalResultadosBuscador table{
+	width:100%;
+	border-collapse: collapse;
+}
+#container form:first-of-type div:first-of-type .modalResultadosBuscador table tr td{
+	cursor:pointer;
+	transition:0.3s;
+	padding:0.3vmax;
+}
+#container form:first-of-type div:first-of-type .modalResultadosBuscador table tr:hover td{
+	background: var(--color1op);
+}
+#container form:first-of-type div:first-of-type .modalResultadosBuscador .topModal{
+	display:block !important;
+	width:100% !important;
+	text-align:right;
+}
+#container form:first-of-type div:first-of-type .modalResultadosBuscador .topModal img{
+	cursor:pointer;
+}
+
+#container form:first-of-type div:first-of-type .imgAgregarProducto{
+	position: absolute;
+    right: 0.25vmax;
+	top: 4.35vmax;
+    width: 2.5vmax;
+    cursor: pointer;
+    background: #FFF;
+    padding-left: 0.5vmax;
+}
+
+/***** CATEGORIAS ******/
+.contenedorCategorias{
+	padding:0.3vmax 2vmax;
+}
+.contenedorCategorias img{
+	width:1vmax;
+	cursor:pointer;
+	margin:0 1vmax;
+	vertical-align:middle;
+}
+#contNuevaCategoria{
+	padding-left:3vmax;
+}
+#contNuevaCategoria img{
+	margin:0 0.2vmax;
+}
+#container form:first-of-type div:first-of-type .categoriasFormularios,
+#container form:first-of-type div:first-of-type .categoriasFormularios div{
+	display:flex;
+	flex-direction: row;
+	width:100%;
+}
+#container form:first-of-type div:first-of-type .categoriasFormularios{
+	position: absolute;
+    width: 200%;
+    background: #FFF;
+    box-shadow: 0px 0px 3px 3px #CCC;
+    border-radius: 10px;
+    z-index: 999;
+	right: 0;
+	height: 50vh;
+	overflow: auto;
+	display:none;
+}
+#container form:first-of-type div:first-of-type .categoriasFormularios .iconoEliminar{
+	cursor: pointer;
+    position: absolute;
+    top: 1vh;
+    right: 1vh;
+	width: 2vmax;
+	margin:0;
+}
+#container form:first-of-type div:first-of-type .categoriasFormularios input[type=checkbox]{
+	width:1vmax;
+	height:1vmax;
+}
+#container form:first-of-type div:first-of-type .categoriasFormularios label{
+	margin:0;
+	cursor:pointer;
+}
+#container form:first-of-type div:first-of-type #categoriasAgregadas{
+	width:100%;
+}
+#container form:first-of-type div:first-of-type #categoriasAgregadas label{
+	margin:0;
+}
+
+#container form:first-of-type div:first-of-type #categoriasAgregadas label img{
+	cursor:pointer;
+	margin-right: 0.3vmax;
+    vertical-align: top;
+}
+
+/***** IMAGENES DE GALERIAS *****/
+.contenedorImagenes{
+	display:flex;
+	flex-wrap: wrap;
+	width: 100%;
+	justify-content: space-between;
+}
+.contenedorImagenes .contImg{
+	display:flex;
+	position:relative;
+	flex-wrap: wrap;
+	width: 22%;
+	flex-direction: column;
+}
+.contenedorImagenes .contImg .imagen{
+	width:100%;
+}
+.contenedorImagenes .contImg .imagen img{
+	width:100%;
+}
+.contenedorImagenes .contImg .acciones{
+	width:100%;
+	background:var(--color1op);
+}
+.contenedorImagenes .contImg .accionesTop{
+	position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0.3vmax;
+    display: flex;
+    justify-content: space-between;
+    background: var(--color1op);
+}
+.contenedorImagenes .contImg .accionesTop a{}
+.contenedorImagenes .contImg .accionesTop a img{
+	padding:0.5vmax;
+	background:var(--blanco);
+	border:solid 2px var(--negro);
+	border-radius:100px;
+}
+
+/***** MESA DE TRABAJO *****/
+.detallesMesaTrabajo{
+	width:100%;
+	font-size:1vmax;
+}
+.detallesMesaTrabajo td{
+	vertical-align: top;
+}
+.detallesMesaTrabajo td span{
+	color: var(--color1);
+	font-weight:bold;
+}
+
+/****** DETALLE REPARACIONES ******/
+.detalleReparaciones{
+	width:100%;
+	font-size:1vmax;
+	border-collapse: collapse;
+	margin:2vmax 0;
+}
+.detalleReparaciones th{
+	text-align: left;
+	vertical-align: top;
+	padding:1vmax 0.3vmax;
+	border:solid 1px var(--negro);
+	border-right:none;
+	transition:0.3s;
+}
+.detalleReparaciones td{
+	vertical-align: top;
+	padding:1vmax 0.3vmax;
+	border:solid 1px var(--negro);
+	border-left:none;
+	transition:0.3s;
+}
+.detalleReparaciones th:hover,
+.detalleReparaciones th:hover + td{
+	background:var(--color1op);
+}
+
+/****** MENSAJES ERROR ******/
+#container form:first-of-type div:first-of-type .mensajesError{
+	width: 100%;
+    background: #ff00000f;
+    border-radius: 10px;
+    margin: 2vmax;
+    border: solid 3px #ff00003d;
+    color: #da2e2e;
+    font-weight: bold;
+}
+
+
+/****** COTIZACIONES A VENTAS ******/
+.tablaCotizacionVentaDetalle{
+	margin-top:2vmax;
+}
+.tablaCotizacionVentaDetalle th,
+.tablaCotizacionVentaDetalle td{
+	padding:0.3vmax;
+	vertical-align: top;
+}
+
+/****** MODAL ******/
+.btnNuevoModal{
+	vertical-align: bottom;
+	cursor: pointer;
+}
+.baseModal{
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	background: #000000bf;
+	z-index:9;
+}
+.baseModal .contenidoModal{
+	position: fixed;
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	max-width: 50vw;
+    max-height: 80vh;
+    border: solid 0.2vmax var(--color1);
+    border-radius: 10px;
+    background: #FFF;
+    top: 10vh;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+	overflow: auto;
+	padding-bottom: 2vmax;
+}
+.baseModal .contenidoModal .cerrarModal{
+	position: absolute;
+    top: 1vmax;
+    right: 1vmax;
+    cursor: pointer;
+    width: auto;
+}
+.baseModal .contenidoModal h1{
+	width: 100%;
+	padding: 1vmax;
+}
+.baseModal .contenidoModal div{
+	position: relative;
+    width: 30%;
+    display: flex;
+    justify-content: unset;
+    flex-wrap: wrap;
+	flex-direction: column;
+}
+.baseModal .contenidoModal div label{
+	font-size: 1vmax;
+    color: var(--negro);
+    margin-bottom: 1vmax;
+	margin-top: 2vmax;
+}
+.baseModal .contenidoModal div input,
+.baseModal .contenidoModal div select{
+	font-size: 1vmax;
+    color: var(--negro);
+    border: solid 1px var(--color1);
+    padding: 0.5vmax;
+    border-radius: 10px;
+    resize: none;
+}
+
+/****** REPORTES ******/
+
+#container form:first-of-type div:first-of-type .seleccionReporte{
+    display: flex;
+	width: 100%;
+	padding: 5vmax 2vmax;
+	justify-content: space-between;
+	flex-direction: row;
+}
+#container form:first-of-type div:first-of-type .seleccionReporte button{
+	width: 30%;
+	margin-bottom:3vmax;
+}
+.contenedorReportes{
+	width:100%;
+}
+.contenedorReportes .tablaReportes{
+	width:100%;
+}
+.contenedorReportes .tablaReportes table{
+	max-width:100%;
+	min-width:50%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	margin:3vmax 0;
+	border:solid 1px var(--negro);
+	padding:1vmax;
+	border-radius:10px;
+}
+.contenedorReportes .tablaReportes table th,
+.contenedorReportes .tablaReportes table td{
+	padding:1vmax;
+	border-bottom:solid 1px var(--negro);
+	transition:0.3s;
+}
+.contenedorReportes .tablaReportes table .alIzq{
+	text-align: left;
+}
+.contenedorReportes .tablaReportes table .alCen{
+	text-align: center;
+}
+.contenedorReportes .tablaReportes table .alDer{
+	text-align: right;
+}
+.contenedorReportes .tablaReportes table tr:hover td{
+	background: var(--color1op);
+}
