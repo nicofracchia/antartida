@@ -27,14 +27,14 @@
                     <img src='{{ asset('images/iconos/menu/categorias.svg')}}' alt='Categorías' />
                     CATEGORÍAS
                 </a>
+                <a href='{{ path('productos_index') }}'>
+                    <img src='{{ asset('images/iconos/menu/productos_off.png')}}' alt='Productos' />
+                    PRODUCTOS
+                </a>
                 {#}
                 <a href={{ path('usuarios_index') }}>
                     <img src='{{ asset('images/iconos/menu/usuarios_off.png')}}' alt='Usuarios' />
                     USUARIOS
-                </a>
-                <a href='{{ path('productos_index') }}'>
-                    <img src='{{ asset('images/iconos/menu/productos_off.png')}}' alt='Productos' />
-                    PRODUCTOS
                 </a>
                 {#}
             </nav>

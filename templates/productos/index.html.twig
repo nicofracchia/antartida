@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos - {% endblock %}
+
+{% block rutas %}<span>Productos</span>{% endblock %}
+
+{% block contenido %}
+    <div class='contenedorFiltros'>
+        <div class='filtros'>
+            <form action="{{ path('productos_index') }}" method="post">
+                <input type="text" name="filtroProductos[marca]" id="filtroProductos_marca" placeholder="MARCA" value="{{filtrosAplicados.marca}}" style="width:10vmax;" />
+                <input type="text" name="filtroProductos[nombre]" id="filtroProductos_nombre" placeholder="TÍTULO / NOMBRE DEL PRODUCTO" value="{{filtrosAplicados.nombre}}" style="width:15vmax;" />
+                <input type="text" name="filtroProductos[id_externo]" id="filtroProductos_id" placeholder="ID" value="{{filtrosAplicados.id_externo}}" style="width:5vmax;" />
+                <button class="boton_filtros">FILTRAR</button>
+                <a href="{{ path('productos_index') }}" class='vaciarFiltros'>Restablecer Filtros</a>
+            </form>
+        </div>
+        <a href="{{ path('productos_new') }}"><img src="{{asset('images/iconos/nuevo.png')}}" alt="" /></a>
+    </div>
+
+    <table class="tablaListados">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MARCA</th>
+                <th>PRODUCTO</th>
+                <th>PRECIO</th>
+                <th>HABILITACION</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for producto in productos %}
+            <tr>
+                <td>{{ producto.id_externo }}</td>
+                <td>{{ producto.marca }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>${{ producto.precio }}</td>
+                <td>{{ (producto.habilitado == 1) ? 'Habilitado' : 'Deshabilitado' }}</td>
+                <td>
+                    <a href="{{ path('productos_edit', {'id': producto.id}) }}">
+                        <img src="{{asset('images/iconos/editar_off.png')}}" alt="" />
+                    </a>
+                    {#
+                    <a href="{{ path('productos_imagenes', {'id': producto.id}) }}" title='Imagenes'>
+                        <img src="{{asset('images/iconos/imagenes.svg')}}" alt="" />
+                    </a>
+                    #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">No se encontraron productos.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

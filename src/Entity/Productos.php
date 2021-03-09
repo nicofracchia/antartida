@@ -59,6 +59,11 @@ class Productos
      */
     private $productosCaracteristicas;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $precio;
+
     public function __construct()
     {
         $this->productosCategorias = new ArrayCollection();
@@ -198,6 +203,18 @@ class Productos
                 $productosCaracteristica->setProducto(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrecio(): ?float
+    {
+        return $this->precio;
+    }
+
+    public function setPrecio(?float $precio): self
+    {
+        $this->precio = $precio;
 
         return $this;
     }
