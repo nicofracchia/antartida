@@ -35,8 +35,6 @@ class ProductosController extends AbstractController
 
         $productos = $productosRepository->findByFiltros($filtros, $orden);
 
-        dump($productos);
-
         return $this->render('productos/index.html.twig', [
             'productos' => $productos,
             'filtrosAplicados' => $filtros
@@ -55,7 +53,6 @@ class ProductosController extends AbstractController
             $id_externo = intval($request->request->get('producto')['id_externo']);
             $precio = (is_numeric($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
 
-            // GUARDO EL PRODUCTO Y LO USO PARA ASIGNAR ALMACENES
             $producto = new Productos();
             $producto->setIdExterno($id_externo);
             $producto->setNombre($request->request->get('producto')['nombre']);
@@ -104,7 +101,6 @@ class ProductosController extends AbstractController
             $id_externo = intval($request->request->get('producto')['id_externo']);
             $precio = (is_numeric($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
 
-            // GUARDO EL PRODUCTO Y LO USO PARA ASIGNAR ALMACENES
             $producto->setIdExterno($id_externo);
             $producto->setNombre($request->request->get('producto')['nombre']);
             $producto->setPrecio($precio);
@@ -124,16 +120,26 @@ class ProductosController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="productos_delete", methods={"DELETE"})
+     * @Route("/eliminar/{id}", name="productos_delete", methods={"POST"})
      */
     public function delete(Request $request, Productos $producto): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$producto->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($producto);
-            $entityManager->flush();
+        $return = [
+            'estado' => 'ERROR',
+            'mensaje' => 'Token inválido.',
+            'token_recibido' => $request->request->get('_token')
+        ];
+
+        if ($this->isCsrfTokenValid('delete_'.$producto->getId(), $request->request->get('_token'))) {
+            $producto->setEliminado(1);
+            $this->getDoctrine()->getManager()->flush();
+
+            $return = [
+                'estado' => 'OK',
+                'mensaje' => 'El producto fue eliminado correctamente.'
+            ];
         }
 
-        return $this->redirectToRoute('productos_index');
+        return $this->json($return);
     }
 }

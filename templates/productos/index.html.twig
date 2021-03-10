@@ -41,6 +41,15 @@
                     <a href="{{ path('productos_edit', {'id': producto.id}) }}">
                         <img src="{{asset('images/iconos/editar_off.png')}}" alt="" />
                     </a>
+                    <img 
+                        class='iconoBorrarListados' 
+                        src="{{asset('images/iconos/borrar.svg')}}" 
+                        alt="" 
+                        data-id="{{producto.id}}" 
+                        data-mensaje="Seguro que desea eliminar este producto?" 
+                        data-token="{{csrf_token('delete_'~producto.id)}}" 
+                        data-ruta="{{ path('productos_delete', {'id': producto.id}) }}"
+                    />
                     {#
                     <a href="{{ path('productos_imagenes', {'id': producto.id}) }}" title='Imagenes'>
                         <img src="{{asset('images/iconos/imagenes.svg')}}" alt="" />
