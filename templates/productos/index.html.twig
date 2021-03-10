@@ -22,8 +22,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>MARCA</th>
                 <th>PRODUCTO</th>
+                <th>MARCA</th>
                 <th>PRECIO</th>
                 <th>HABILITACION</th>
                 <th>ACCIONES</th>
@@ -33,9 +33,9 @@
         {% for producto in productos %}
             <tr>
                 <td>{{ producto.id_externo }}</td>
-                <td>{{ (producto.marca != '') ? producto.marca : '--- SIN MARCA ---' }}</td>
                 <td>{{ producto.nombre }}</td>
-                <td>${{ producto.precio }}</td>
+                <td>{{ (producto.marca != '') ? producto.marca : '--- SIN MARCA ---' }}</td>
+                <td>${{ producto.precio|number_format(2, ',', '.') }}</td>
                 <td>{{ (producto.habilitado == 1) ? 'Habilitado' : 'Deshabilitado' }}</td>
                 <td>
                     <a href="{{ path('productos_edit', {'id': producto.id}) }}">

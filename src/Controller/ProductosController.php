@@ -52,19 +52,19 @@ class ProductosController extends AbstractController
         
         if ($this->isCsrfTokenValid('nuevo_producto', $request->request->get('_token'))) {
 
-            $id_externo = (is_int($request->request->get('producto')['id_externo'])) ? $request->request->get('producto')['id_externo'] : 0;
-            $precio = (is_float($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
+            $id_externo = intval($request->request->get('producto')['id_externo']);
+            $precio = (is_numeric($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
 
             // GUARDO EL PRODUCTO Y LO USO PARA ASIGNAR ALMACENES
-            $prod = new Productos();
-            $prod->setIdExterno($id_externo);
-            $prod->setNombre($request->request->get('producto')['nombre']);
-            $prod->setPrecio($precio);
-            $prod->setDescripcion($request->request->get('producto')['descripcion']);
-            $prod->setMarca($entityManager->getRepository(Marcas::class)->find($request->request->get('producto')['marca']));
-            $prod->setHabilitado($request->request->get('producto')['habilitado'] ?? 0);
+            $producto = new Productos();
+            $producto->setIdExterno($id_externo);
+            $producto->setNombre($request->request->get('producto')['nombre']);
+            $producto->setPrecio($precio);
+            $producto->setDescripcion($request->request->get('producto')['descripcion']);
+            $producto->setMarca($entityManager->getRepository(Marcas::class)->find($request->request->get('producto')['marca']));
+            $producto->setHabilitado($request->request->get('producto')['habilitado'] ?? 0);
 
-            $entityManager->persist($prod);
+            $entityManager->persist($producto);
             $entityManager->flush();
 
             /*
@@ -90,22 +90,36 @@ class ProductosController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="productos_edit", methods={"GET","POST"})
+     * @Route("/{id}/editar", name="productos_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Productos $producto): Response
     {
-        $form = $this->createForm(ProductosType::class, $producto);
-        $form->handleRequest($request);
+        if($producto->getEliminado() == 1)
+            return $this->redirectToRoute('productos_index');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($this->isCsrfTokenValid('editar_producto_'.$producto->getId(), $request->request->get('_token'))) {
+
+            $id_externo = intval($request->request->get('producto')['id_externo']);
+            $precio = (is_numeric($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
+
+            // GUARDO EL PRODUCTO Y LO USO PARA ASIGNAR ALMACENES
+            $producto->setIdExterno($id_externo);
+            $producto->setNombre($request->request->get('producto')['nombre']);
+            $producto->setPrecio($precio);
+            $producto->setDescripcion($request->request->get('producto')['descripcion']);
+            $producto->setMarca($entityManager->getRepository(Marcas::class)->find($request->request->get('producto')['marca']));
+            $producto->setHabilitado($request->request->get('producto')['habilitado'] ?? 0);
+
+            $entityManager->flush();
 
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/edit.html.twig', [
             'producto' => $producto,
-            'form' => $form->createView(),
+            'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
 

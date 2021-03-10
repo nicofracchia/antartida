@@ -1,5 +1,5 @@
 {% set edicion = (producto is defined) ? true : false %}
-{% set marcaSel = producto.marca ?? '' %}
+{% set marcaSel = producto.marca.id ?? '' %}
 {% set habilitacion = producto.habilitado ?? 0 %}
 
 <div>
@@ -23,7 +23,7 @@
         <select id="producto_marca" name="producto[marca]" required="required">
             <option value="0">--- Sin marca ---</option>
             {% for marca in marcas %}
-                <option {{ (marcaSel == marca.marca) ? 'selected' }} value="{{marca.id}}" >{{marca.marca}}</option>
+                <option {{ (marcaSel == marca.id) ? 'selected' }} value="{{marca.id}}" >{{marca.marca}}</option>
             {% endfor %}
         </select>
     </div>
@@ -37,7 +37,7 @@
     </div>
     <div>
         <label for="producto_id_externo" class="required">ID Externo</label>
-        <input type="number" step="1" id="producto_id_externo" name="producto[id_externo]" value="{{producto.id_externo ?? ''}}" placeholder='ID del sistema de ventas'/>
+        <input type="number" step="1" id="producto_id_externo" name="producto[id_externo]" value="{{producto.idExterno ?? ''}}" placeholder='ID del sistema de ventas'/>
     </div>
 </div>
 
