@@ -56,7 +56,7 @@ class CategoriasController extends AbstractController
             $categoria = new Categorias();
             $categoria->setNombre($request->request->get('categoria'));
             $categoria->setPadre($request->request->get('padre'));
-            $categoria->setGrupo($grupoId.'|'.$request->request->get('padre'));
+            $categoria->setGrupo($grupoId.'|'.$request->request->get('padre').'|');
             $categoria->setHabilitado(1);
             $categoria->setEliminado(0);
 

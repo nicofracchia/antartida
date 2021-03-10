@@ -64,24 +64,13 @@ class ProductosController extends AbstractController
             $entityManager->persist($producto);
             $entityManager->flush();
 
-            /*
-            // ASIGNO CATEGORIAS AL PRODUCTO NUEVO
-            if($request->request->get('categoriasProducto') !== null){
-                foreach ($request->request->get('categoriasProducto') as $idCategoria){
-                    $cat = $entityManager->getRepository(Categorias::class)->find($idCategoria);
-                    $CP = new CategoriasProductos();
-                    $CP->setProducto($prod);
-                    $CP->setCategoria($cat);
-                    $entityManager->persist($CP);
-                    $entityManager->flush();
-                }
-            }
-            */
+            $this->guardaProductosCategorias($producto, $request->request->get('categoriasProducto'));
 
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/new.html.twig', [
+            'categoriasAsignadas' => $this->categoriasPorProducto(0),
             'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
@@ -110,11 +99,14 @@ class ProductosController extends AbstractController
 
             $entityManager->flush();
 
+            $this->guardaProductosCategorias($producto, $request->request->get('categoriasProducto'));
+
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/edit.html.twig', [
             'producto' => $producto,
+            'categoriasAsignadas' => $this->categoriasPorProducto($producto->getId()),
             'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
@@ -141,5 +133,45 @@ class ProductosController extends AbstractController
         }
 
         return $this->json($return);
+    }
+
+
+    // CATEGORIAS 
+
+    public function categoriasPorProducto($idProducto = 0){
+        $return = ['ca' => [], 'cajs' => ''];
+        
+        if($idProducto != 0){
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            $categoriasAsignadas = $entityManager->getRepository(ProductosCategorias::class)->findBy(['producto' => $idProducto]);
+            $i = 0;
+            foreach($categoriasAsignadas as $ca){
+                $return['ca'][$i]['id'] = $ca->getCategoria()->getId();
+                $return['ca'][$i]['categoria'] = $ca->getCategoria()->getNombre();
+                $return['cajs'] .= $ca->getCategoria()->getId().',';
+                $i++;
+            }
+        }
+
+        return $return;
+
+    }
+
+    public function guardaProductosCategorias($producto, $categorias){
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getRepository(ProductosCategorias::class)->eliminarPorProducto($producto->getId());
+
+        if($producto !== null and $categorias !== null){
+            foreach ($categorias as $idCategoria){
+                $categoria = $entityManager->getRepository(Categorias::class)->find($idCategoria);
+
+                $prodCat = new ProductosCategorias();
+                $prodCat->setProducto($producto);
+                $prodCat->setCategoria($categoria);
+                $entityManager->persist($prodCat);
+                $entityManager->flush();
+            }
+        }
     }
 }

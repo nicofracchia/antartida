@@ -39,8 +39,28 @@
         <label for="producto_id_externo" class="required">ID Externo</label>
         <input type="number" step="1" id="producto_id_externo" name="producto[id_externo]" value="{{producto.idExterno ?? ''}}" placeholder='ID del sistema de ventas'/>
     </div>
+    <div></div>
+    <div></div>
+    <div>
+        <label for="productos_categoria">Categorías <img src="{{asset('images/iconos/editar_off.png')}}" alt="" onclick="mostrarCategorias();" style='cursor:pointer;'/></label>
+        <div class="contenedorCategorias categoriasFormularios" id="contCat_0">
+            <img src="{{asset('images/iconos/cancelar.svg')}}" alt="" onclick="ocultarCategorias();" class='iconoEliminar' />
+        </div>
+        <div id="categoriasAgregadas">
+            {% for ca in categoriasAsignadas.ca %}
+                <input type="hidden" name="categoriasProducto[]" id="inputCatAgregada_{{ca.id}}" value="{{ca.id}}">
+                <label id="labelCatAgregada_{{ca.id}}" onclick="eliminarCategoria({{ca.id}});">
+                    <img src="/images/iconos/borrar_rojo.svg"> {{ca.categoria}}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
 </div>
 
+<input type="hidden" id="cajs" value="{{categoriasAsignadas.cajs}}">
 <input type="hidden" name="_token" value="{{ (edicion) ? csrf_token('editar_producto_'~producto.id) : csrf_token('nuevo_producto') }}">
 
 <div class="botonesFormularios">
@@ -49,3 +69,108 @@
     <br/><br/>
     <button class="btn btnGuardar" name='guardar' value='2'>Guardar y cargar imágenes</button>
 </div>
+
+<script>
+    
+    function getCategorias(){
+        fetch("{{ path('categorias_listado') }}", {
+            method: 'post',
+            mode: 'cors',
+            credentials: 'same-origin'
+        }).then(function(response){
+            return response.json();
+        }).then(function(ccc){
+            ccc.forEach(armarArbolCategorias);
+        }).catch(function(error){
+            console.error('ERROR:', error);
+        });
+    }
+
+    function armarArbolCategorias(item, index){
+        if(item.id == 0){
+            return false;
+        }
+
+        let divCont = document.createElement('div');
+        divCont.classList.add('contenedorCategorias');
+        divCont.setAttribute("id", "contCat_"+item.id);
+
+        let divCat = document.createElement('div');
+
+        let label = document.createElement('label');
+            label.setAttribute("for", "chkCat_"+item.id);
+            label.setAttribute("id", "labelCat_"+item.id);
+            label.innerHTML = item.nombre;
+        
+        let agregar = document.createElement('input');
+        agregar.setAttribute("type", "checkbox");
+        agregar.setAttribute("title", "Agregar sub categoría");
+        agregar.setAttribute("data-id", item.id);
+        agregar.setAttribute("id", "chkCat_"+item.id);
+        agregar.onchange = function () {
+            agregarCategoria(this);
+        };
+
+        let categoriasInicial = document.getElementById('cajs').value.split(',');
+        if(categoriasInicial.indexOf(String(item.id)) != -1)
+            agregar.checked = true;
+        
+        divCat.prepend(label);
+        divCat.prepend(agregar);
+
+        divCont.prepend(divCat);
+        
+        document.getElementById("contCat_"+item.padre).appendChild(divCont);
+    }
+
+    function agregarCategoria(self){
+        let id = self.dataset.id;
+
+        // ELIMINO LA CATEGORIA AGREGADA PARA EVITAR REPETICIONES
+        eliminarCategoria(id, 1);
+
+        // SI ESTA CHECKEADO LA AGREGO
+        if(self.checked){
+            let eliminar = document.createElement('img');
+                eliminar.setAttribute("src", "{{asset('images/iconos/borrar_rojo.svg')}}");
+                eliminar.onclick = function(){
+                    eliminarCategoria(id);
+                }
+
+            let label = document.createElement('label');
+                label.setAttribute("id", "labelCatAgregada_"+id);
+                label.innerHTML = document.getElementById('labelCat_'+id).innerHTML;
+
+            let input = document.createElement('input');
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "categoriasProducto[]");
+                input.setAttribute("id", "inputCatAgregada_"+id);
+                input.value = id;
+
+            document.getElementById('categoriasAgregadas').append(input);
+            label.prepend(eliminar);
+            document.getElementById('categoriasAgregadas').append(label);
+        }
+    }
+
+    function mostrarCategorias(){
+        document.getElementById('contCat_0').style.display = 'block';
+    }
+
+    function ocultarCategorias(){
+        document.getElementById('contCat_0').style.display = 'none';
+    }
+
+    function eliminarCategoria(id, cancelaCheck = 0){
+        if(document.getElementById('labelCatAgregada_'+id) !== null)
+            document.getElementById('labelCatAgregada_'+id).remove();
+        
+        if(document.getElementById('inputCatAgregada_'+id) !== null)
+            document.getElementById('inputCatAgregada_'+id).remove();
+
+        if(document.getElementById('chkCat_'+id) !== null && cancelaCheck == 0)
+            document.getElementById('chkCat_'+id).checked = false;
+    }
+
+    getCategorias();
+</script>

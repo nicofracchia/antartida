@@ -22,7 +22,7 @@ class CategoriasRepository extends ServiceEntityRepository
     public function eliminarArbol($id){
         $conn = $this->getEntityManager()->getConnection();
 
-        $SQL  = "UPDATE categorias SET eliminado = 1 WHERE id = ".$id." OR grupo LIKE '%".$id."%'";
+        $SQL  = "UPDATE categorias SET eliminado = 1 WHERE id = ".$id." OR grupo LIKE '%|".$id."|%'";
 
         $stmt = $conn->prepare($SQL);
         $stmt->execute();
