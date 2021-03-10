@@ -129,11 +129,16 @@ footer{
 /****** RUTAS ******/
 #rutas{
 	width:100%;
-	padding:2vh 20vw;
+	padding:2vh 2vw 2vh 20vw;
 	color: var(--negro);
 }
 #rutas span{
 	color:var(--color2);
+}
+#rutas .btnVolver{
+	padding: 0;
+    background: none;
+    float: right;
 }
 
 /****** SECTION GENERAL ******/
@@ -330,6 +335,12 @@ section nav a img{
 	flex-wrap: wrap;
 	flex-direction: column;
 }
+#container form:first-of-type div:first-of-type .columnas_2{
+	width:65%;
+}
+#container form:first-of-type div:first-of-type .columnas_3{
+	width:100%;
+}
 #container form:first-of-type div:first-of-type div label{
 	font-size: 1vmax;
 	color:var(--negro);
@@ -347,7 +358,7 @@ section nav a img{
 	border:solid 1px var(--color1);
 	padding:0.5vmax;
 	border-radius:10px;
-	resize:none;
+	resize:vertical;
 }
 #container form:first-of-type div:first-of-type div input[type=date]{
 	position:relative;

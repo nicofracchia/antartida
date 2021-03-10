@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Productos;
 use App\Entity\Categorias;
+use App\Entity\Marcas;
 use App\Entity\ProductosCategorias;
 use App\Repository\ProductosRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,35 +44,48 @@ class ProductosController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="productos_new", methods={"GET","POST"})
+     * @Route("/nuevo", name="productos_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
-        $producto = new Productos();
-        $form = $this->createForm(ProductosType::class, $producto);
-        $form->handleRequest($request);
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        if ($this->isCsrfTokenValid('nuevo_producto', $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($producto);
+            $id_externo = (is_int($request->request->get('producto')['id_externo'])) ? $request->request->get('producto')['id_externo'] : 0;
+            $precio = (is_float($request->request->get('producto')['precio'])) ? $request->request->get('producto')['precio'] : 0;
+
+            // GUARDO EL PRODUCTO Y LO USO PARA ASIGNAR ALMACENES
+            $prod = new Productos();
+            $prod->setIdExterno($id_externo);
+            $prod->setNombre($request->request->get('producto')['nombre']);
+            $prod->setPrecio($precio);
+            $prod->setDescripcion($request->request->get('producto')['descripcion']);
+            $prod->setMarca($entityManager->getRepository(Marcas::class)->find($request->request->get('producto')['marca']));
+            $prod->setHabilitado($request->request->get('producto')['habilitado'] ?? 0);
+
+            $entityManager->persist($prod);
             $entityManager->flush();
+
+            /*
+            // ASIGNO CATEGORIAS AL PRODUCTO NUEVO
+            if($request->request->get('categoriasProducto') !== null){
+                foreach ($request->request->get('categoriasProducto') as $idCategoria){
+                    $cat = $entityManager->getRepository(Categorias::class)->find($idCategoria);
+                    $CP = new CategoriasProductos();
+                    $CP->setProducto($prod);
+                    $CP->setCategoria($cat);
+                    $entityManager->persist($CP);
+                    $entityManager->flush();
+                }
+            }
+            */
 
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/new.html.twig', [
-            'producto' => $producto,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="productos_show", methods={"GET"})
-     */
-    public function show(Productos $producto): Response
-    {
-        return $this->render('productos/show.html.twig', [
-            'producto' => $producto,
+            'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
 

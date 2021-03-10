@@ -47,7 +47,7 @@ class Productos
     /**
      * @ORM\Column(type="smallint")
      */
-    private $eliminado;
+    private $eliminado = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=ProductosCategorias::class, mappedBy="producto")

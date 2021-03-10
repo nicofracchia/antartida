@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Productos{% endblock %}
+{% block title %}Productos - {% endblock %}
 
-{% block body %}
-    <h1>Create new Productos</h1>
+{% block rutas %}
+    Productos - <span>Nuevo</span>
+    <a href="{{ path('productos_index') }}" class='btnVolver' title="Volver al listado">
+        <img src="{{asset('images/iconos/volver.png')}}" alt="" />
+    </a>
+{% endblock %}
 
-    {{ include('productos/_form.html.twig') }}
-
-    <a href="{{ path('productos_index') }}">back to list</a>
+{% block contenido %}
+    <h1>Nuevo producto</h1>
+    
+    <form method="post" action="{{ path('productos_new') }}">
+        {{ include('productos/_form.html.twig') }}
+    </form>
 {% endblock %}

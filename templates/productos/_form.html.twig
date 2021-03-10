@@ -1,4 +1,51 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% set edicion = (producto is defined) ? true : false %}
+{% set marcaSel = producto.marca ?? '' %}
+{% set habilitacion = producto.habilitado ?? 0 %}
+
+<div>
+    <div class='columnas_3'>
+        <label> </label>
+        <div class="contCheckBox">
+            <input type="checkbox" id="productos_habilitado" name="producto[habilitado]" value="1" {{ (habilitacion == "1") ? "checked" }}>
+            <label for="productos_habilitado">Habilitado</label>
+        </div>
+    </div>
+    <div>
+        <label for="producto_nombre" class="required">Nombre</label>
+        <input type="text" id="producto_nombre" name="producto[nombre]" required="required" value="{{producto.nombre ?? ''}}" placeholder="Nombre del producto" />
+    </div>
+    <div>
+        <label for="producto_marca" class="required">
+            Marca
+            {# <img src="{{asset('images/iconos/nuevo.svg')}}" class='btnNuevoModal' alt="Nueva marca" title="Nueva marca" onclick="oGen.fnCargaModal('{{path('marcas_modal')}}')" /> #}
+            <img src="{{asset('images/iconos/nuevo.svg')}}" class='btnNuevoModal' alt="Nueva marca" title="Nueva marca" onclick="oGen.fnCargaModal()" />
+        </label>
+        <select id="producto_marca" name="producto[marca]" required="required">
+            <option value="0">--- Sin marca ---</option>
+            {% for marca in marcas %}
+                <option {{ (marcaSel == marca.marca) ? 'selected' }} value="{{marca.id}}" >{{marca.marca}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="producto_precio" class="required">Precio</label>
+        <input type="number" step=".01" id="producto_precio" name="producto[precio]" value="{{producto.precio ?? ''}}" placeholder='$'/>
+    </div>
+    <div class='columnas_2'>
+        <label for="producto_descripcion">Descripción</label>
+        <textarea id="producto_descripcion" name="producto[descripcion]">{{producto.descripcion ?? ''}}</textarea>
+    </div>
+    <div>
+        <label for="producto_id_externo" class="required">ID Externo</label>
+        <input type="number" step="1" id="producto_id_externo" name="producto[id_externo]" value="{{producto.id_externo ?? ''}}" placeholder='ID del sistema de ventas'/>
+    </div>
+</div>
+
+<input type="hidden" name="_token" value="{{ (edicion) ? csrf_token('editar_producto_'~producto.id) : csrf_token('nuevo_producto') }}">
+
+<div class="botonesFormularios">
+    <a href="{{ path('productos_index') }}" class='btn btnCancelar'>Cancelar</a>
+    <button class="btn btnGuardar" name='guardar' value='1'>Guardar</button>
+    <br/><br/>
+    <button class="btn btnGuardar" name='guardar' value='2'>Guardar y cargar imágenes</button>
+</div>

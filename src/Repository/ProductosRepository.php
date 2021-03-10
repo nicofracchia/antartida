@@ -27,7 +27,7 @@ class ProductosRepository extends ServiceEntityRepository
 
         $SQL  = "SELECT p.id, p.id_externo, p.nombre, p.precio, p.descripcion, p.habilitado, m.marca ";
         $SQL .= "FROM productos AS p ";
-        $SQL .= "INNER JOIN marcas AS m ";
+        $SQL .= "LEFT JOIN marcas AS m ";
         $SQL .= "   ON p.marca_id = m.id ";
         $SQL .= "WHERE eliminado = :eliminado ";
 
