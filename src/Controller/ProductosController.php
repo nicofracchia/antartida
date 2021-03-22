@@ -6,6 +6,7 @@ use App\Entity\Productos;
 use App\Entity\Categorias;
 use App\Entity\Marcas;
 use App\Entity\ProductosCategorias;
+use App\Entity\ProductosCaracteristicas;
 use App\Repository\ProductosRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,11 +67,14 @@ class ProductosController extends AbstractController
 
             $this->guardaProductosCategorias($producto, $request->request->get('categoriasProducto'));
 
+            $this->guardaProductosCaracteristicas($producto, $request->request->get('caracteristicasClave'), $request->request->get('caracteristicasValor'));
+
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/new.html.twig', [
             'categoriasAsignadas' => $this->categoriasPorProducto(0),
+            'caracteristicas' => Array(),
             'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
@@ -101,12 +105,15 @@ class ProductosController extends AbstractController
 
             $this->guardaProductosCategorias($producto, $request->request->get('categoriasProducto'));
 
+            $this->guardaProductosCaracteristicas($producto, $request->request->get('caracteristicasClave'), $request->request->get('caracteristicasValor'));
+
             return $this->redirectToRoute('productos_index');
         }
 
         return $this->render('productos/edit.html.twig', [
             'producto' => $producto,
             'categoriasAsignadas' => $this->categoriasPorProducto($producto->getId()),
+            'caracteristicas' => $entityManager->getRepository(ProductosCaracteristicas::class)->findBy(['producto' => $producto]),
             'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
         ]);
     }
@@ -173,5 +180,25 @@ class ProductosController extends AbstractController
                 $entityManager->flush();
             }
         }
+    }
+
+    // CARACTERISTICAS
+
+    public function guardaProductosCaracteristicas($producto, $claves, $valores){
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getRepository(ProductosCaracteristicas::class)->eliminarPorProducto($producto->getId());
+
+        for($i = 0; $i < count($claves); $i++){
+            if($claves[$i] != '' and $valores[$i] != ''){
+                $prodCar = new ProductosCaracteristicas;
+                $prodCar->setProducto($producto);
+                $prodCar->setClave($claves[$i]);
+                $prodCar->setValor($valores[$i]);
+
+                $entityManager->persist($prodCar);
+                $entityManager->flush();
+            }
+        }
+
     }
 }

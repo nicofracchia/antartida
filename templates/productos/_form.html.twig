@@ -39,7 +39,35 @@
         <label for="producto_id_externo" class="required">ID Externo</label>
         <input type="number" step="1" id="producto_id_externo" name="producto[id_externo]" value="{{producto.idExterno ?? ''}}" placeholder='ID del sistema de ventas'/>
     </div>
-    <div></div>
+    <div>
+        <label for="productos_caracteristicas">
+            Características 
+            <img src="{{asset('images/iconos/nuevo.svg')}}" alt="" onclick="agregarCaracterísticas();" style='cursor:pointer;'/>
+        </label>
+        <table>
+            <thead>
+                <tr>
+                    <th>Característica</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id='tablaCaracteristicas'>
+                <tr>
+                    <td><input type='text' name='caracteristicasClave[]' placeholder='Característica' /></td>
+                    <td><input type='text' name='caracteristicasValor[]' placeholder='Valor de la característica' /></td>
+                    <td><img src="{{asset('images/iconos/borrar_rojo.svg')}}" title="Eliminar característica" onclick="eliminarCaracteristica(this);" /></td>
+                </tr>
+                {% for c in caracteristicas %}
+                    <tr>
+                        <td><input type='text' name='caracteristicasClave[]' placeholder='Característica' value='{{c.clave}}' /></td>
+                        <td><input type='text' name='caracteristicasValor[]' placeholder='Valor de la característica' value='{{c.valor}}' /></td>
+                        <td><img src="{{asset('images/iconos/borrar_rojo.svg')}}" title="Eliminar característica" onclick="eliminarCaracteristica(this);" /></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <div></div>
     <div>
         <label for="productos_categoria">Categorías <img src="{{asset('images/iconos/editar_off.png')}}" alt="" onclick="mostrarCategorias();" style='cursor:pointer;'/></label>
@@ -71,7 +99,8 @@
 </div>
 
 <script>
-    
+    // CATEGORIAS
+
     function getCategorias(){
         fetch("{{ path('categorias_listado') }}", {
             method: 'post',
@@ -171,6 +200,43 @@
         if(document.getElementById('chkCat_'+id) !== null && cancelaCheck == 0)
             document.getElementById('chkCat_'+id).checked = false;
     }
-
+    
     getCategorias();
+
+    // CARACTERISTICAS
+
+    function agregarCaracterísticas(){
+        let tabla = document.getElementById('tablaCaracteristicas');
+        let tr = document.createElement('tr');
+        let td1 = document.createElement('td');
+        let td2 = document.createElement('td');
+        let td3 = document.createElement('td');
+        let clave = document.createElement('input');
+        let valor = document.createElement('input');
+        let eliminar = document.createElement('img');
+        clave.setAttribute("type", "text");
+        clave.setAttribute("name", "caracteristicasClave[]");
+        clave.setAttribute("placeholder", "Característica");
+        valor.setAttribute("type", "text");
+        valor.setAttribute("name", "caracteristicasValor[]");
+        valor.setAttribute("placeholder", "Valor de la característica");
+        eliminar.setAttribute("src", "{{asset('images/iconos/borrar_rojo.svg')}}");
+        eliminar.setAttribute("title", "Eliminar característica");
+        eliminar.onclick = function () {
+            eliminarCaracteristica(this);
+        };
+
+        td1.append(clave);
+        td2.append(valor);
+        td3.append(eliminar);
+        tr.append(td1);
+        tr.append(td2);
+        tr.append(td3);
+        tabla.prepend(tr);
+    }
+
+    function eliminarCaracteristica(item){
+        item.parentElement.parentElement.remove();
+    }
+
 </script>

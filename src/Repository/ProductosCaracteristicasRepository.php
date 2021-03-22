@@ -19,32 +19,13 @@ class ProductosCaracteristicasRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductosCaracteristicas::class);
     }
 
-    // /**
-    //  * @return ProductosCaracteristicas[] Returns an array of ProductosCaracteristicas objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function eliminarPorProducto($idProducto){
+        $conn = $this->getEntityManager()->getConnection();
 
-    /*
-    public function findOneBySomeField($value): ?ProductosCaracteristicas
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $SQL  = "DELETE FROM productos_caracteristicas WHERE producto_id = :idProducto";
+
+        $STMT = $conn->prepare($SQL);
+        
+        $STMT->execute(['idProducto' => $idProducto]);
     }
-    */
 }
