@@ -75,7 +75,7 @@ class ProductosController extends AbstractController
         return $this->render('productos/new.html.twig', [
             'categoriasAsignadas' => $this->categoriasPorProducto(0),
             'caracteristicas' => Array(),
-            'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
+            'marcas' => $entityManager->getRepository(Marcas::class)->findBy([], ['marca' => 'ASC'])
         ]);
     }
 
@@ -114,7 +114,7 @@ class ProductosController extends AbstractController
             'producto' => $producto,
             'categoriasAsignadas' => $this->categoriasPorProducto($producto->getId()),
             'caracteristicas' => $entityManager->getRepository(ProductosCaracteristicas::class)->findBy(['producto' => $producto]),
-            'marcas' => $entityManager->getRepository(Marcas::class)->findAll()
+            'marcas' => $entityManager->getRepository(Marcas::class)->findBy([], ['marca' => 'ASC'])
         ]);
     }
 
@@ -200,5 +200,31 @@ class ProductosController extends AbstractController
             }
         }
 
+    }
+
+    // MARCAS
+
+    /**
+     * @Route("/marcas", name="marcas_modal", methods={"GET","POST"})
+     */
+    public function modalMarcas(Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('nueva_marca', $request->request->get('token'))) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $marca = new Marcas();
+            $marca->setMarca($request->request->get('marca'));
+
+            $entityManager->persist($marca);
+            $entityManager->flush();
+            
+            $r = Array();
+            $r['id'] = $marca->getId();
+            $r['marca'] = $marca->getMarca();
+
+            return $this->json($r);
+        }
+        return $this->render('modal/modalMarca.html.twig');
     }
 }

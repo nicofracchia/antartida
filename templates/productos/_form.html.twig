@@ -17,8 +17,7 @@
     <div>
         <label for="producto_marca" class="required">
             Marca
-            {# <img src="{{asset('images/iconos/nuevo.svg')}}" class='btnNuevoModal' alt="Nueva marca" title="Nueva marca" onclick="oGen.fnCargaModal('{{path('marcas_modal')}}')" /> #}
-            <img src="{{asset('images/iconos/nuevo.svg')}}" class='btnNuevoModal' alt="Nueva marca" title="Nueva marca" onclick="oGen.fnCargaModal()" />
+            <img src="{{asset('images/iconos/nuevo.svg')}}" class='btnNuevoModal' alt="Nueva marca" title="Nueva marca" onclick="oGen.fnCargaModal('{{path('marcas_modal')}}')" />
         </label>
         <select id="producto_marca" name="producto[marca]" required="required">
             <option value="0">--- Sin marca ---</option>

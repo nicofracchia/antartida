@@ -1,0 +1,18 @@
+<div class='baseModal'>
+    <div class='contenidoModal'>
+        <input type="hidden" name="modalMarca_token" id="modalMarca_token" value="{{ csrf_token('nueva_marca') }}">
+        <div class='cerrarModal' onclick="oGen.fnCerrarModal(this);">
+            <img src="{{asset('images/iconos/cancelar.svg')}}" alt='Cerrar' title='Cerrar' />
+        </div>
+        <h1>Nueva marca</h1>
+        <div>
+            <label for="modalMarca_marca">Marca</label>
+            <input type="text" id="modalMarca_marca" name="modalMarca[marca]">
+        </div>
+        <div>
+            <label><br/></label>
+            <input type="hidden" id="ruta_marcas_guardar" value="{{path('marcas_modal')}}" />
+            <button class="btn btnGuardar" onclick="oGen.fnGuardaMarcaModal()">Guardar</button>
+        </div>
+    </div>
+</div>
