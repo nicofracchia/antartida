@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Importador - {% endblock %}
+
+{% block rutas %}<span>Importar CSV</span>{% endblock %}
+
+{% block contenido %}
+
+    <form method="post" action="{{ path('importador_actualizar') }}" enctype="multipart/form-data">
+        <div>
+            <div class='columnas_3'>
+                <label for="importador_archivo" class="required">Archivo para importar</label>
+                <input type="file" id="importador_archivo" name="importador[archivo]" required="required" accept=".csv" />
+            </div>
+            <div>
+                <label> </label>
+                <div class="contCheckBox">
+                    <input type="checkbox" id="importador_actualizar_nuevos" name="actualizar[nuevos]" value="1" />
+                    <label for="importador_actualizar_nuevos">Cargar nuevos productos</label>
+                </div>
+            </div>
+            <div>
+                <label> </label>
+                <div class="contCheckBox">
+                    <input type="checkbox" id="importador_actualizar_precios" name="actualizar[precios]" value="1" />
+                    <label for="importador_actualizar_precios">Actualizar precios</label>
+                </div>
+            </div>
+            <div>
+                <label> </label>
+                <div class="contCheckBox">
+                    <input type="checkbox" id="importador_actualizar_nombres" name="actualizar[nombres]" value="1" />
+                    <label for="importador_actualizar_nombres">Actualizar nombre de productos</label>
+                </div>
+            </div>
+            <div>
+                <label> </label>
+                <div class="contCheckBox">
+                    <input type="checkbox" id="importador_actualizar_marcas" name="actualizar[marcas]" value="1" />
+                    <label for="importador_actualizar_marcas">Actualizar marcas de productos</label>
+                </div>
+            </div>
+            <div>
+                <label> </label>
+                <div class="contCheckBox">
+                    <input type="checkbox" id="importador_actualizar_categorias" name="actualizar[categorias]" value="1" />
+                    <label for="importador_actualizar_categorias">Actualizar categorías de productos</label>
+                </div>
+            </div>
+            <div>
+                <div class="botonesFormularios">
+                    <button class="btn btnGuardar">Actualizar</button>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="_token" value="{{csrf_token('nuevo_csv')}}">
+    </form>
+
+{% endblock %}
