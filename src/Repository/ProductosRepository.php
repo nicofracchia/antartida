@@ -60,4 +60,12 @@ class ProductosRepository extends ServiceEntityRepository
 
         return $STMT->fetchAllAssociative();
     }
+
+    public function actualizarImportado($producto, $actualizaciones){
+
+    }
+
+    public function crearImportado($producto){
+        
+    }
 }

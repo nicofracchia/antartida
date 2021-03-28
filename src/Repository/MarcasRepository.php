@@ -19,32 +19,17 @@ class MarcasRepository extends ServiceEntityRepository
         parent::__construct($registry, Marcas::class);
     }
 
-    // /**
-    //  * @return Marcas[] Returns an array of Marcas objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function findMarcaLike($marca){
+        $conn = $this->getEntityManager()->getConnection();
 
-    /*
-    public function findOneBySomeField($value): ?Marcas
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $SQL  = "SELECT * FROM marcas WHERE marca LIKE :marca LIMIT 0, 1";
+
+        $params['marca'] = '%'.$marca.'%';
+
+        $STMT = $conn->prepare($SQL);
+        
+        $STMT->execute($params);
+
+        return $STMT->fetchAssociative();
     }
-    */
 }
