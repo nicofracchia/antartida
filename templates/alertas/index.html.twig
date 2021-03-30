@@ -6,6 +6,75 @@
 
 {% block contenido %}
     
-    Alertas!!!
+    <h1>Productos sin categorías asociadas</h1>
+    <br/><br/>
+    <table class="tablaListados">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID EXTERNO</th>
+                <th>PRODUCTO</th>
+                <th>PRECIO</th>
+                <th>HABILITACION</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for psc in productosSinCategorias %}
+            <tr>
+                <td>{{ psc.id }}</td>
+                <td>{{ psc.id_externo }}</td>
+                <td>{{ psc.nombre }}</td>
+                <td>${{ psc.precio|number_format(2, ',', '.') }}</td>
+                <td>{{ (psc.habilitado == 1) ? 'Habilitado' : 'Deshabilitado' }}</td>
+                <td>
+                    <a href="{{ path('productos_edit', {'id': psc.id}) }}">
+                        <img src="{{asset('images/iconos/editar_off.png')}}" alt="" />
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No se encontraron productos sin categorias.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/><br/><br/><br/>
+    <h1>Productos sin precio</h1>
+    <br/><br/>
+    <table class="tablaListados">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID EXTERNO</th>
+                <th>PRODUCTO</th>
+                <th>PRECIO</th>
+                <th>HABILITACION</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for psp in productosSinPrecio %}
+            <tr>
+                <td>{{ psp.id }}</td>
+                <td>{{ psp.id_externo }}</td>
+                <td>{{ psp.nombre }}</td>
+                <td>{{ psp.precio|number_format(2, ',', '.') }}</td>
+                <td>{{ (psp.habilitado == 1) ? 'Habilitado' : 'Deshabilitado' }}</td>
+                <td>
+                    <a href="{{ path('productos_edit', {'id': psp.id}) }}">
+                        <img src="{{asset('images/iconos/editar_off.png')}}" alt="" />
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No se encontraron productos sin precio.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 
 {% endblock %}

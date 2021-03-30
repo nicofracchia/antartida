@@ -72,12 +72,29 @@ class ProductosRepository extends ServiceEntityRepository
     public function findSinCategorias(){
         $conn = $this->getEntityManager()->getConnection();
 
-        $SQL  = "SELECT p.id, p.id_externo, p.nombre ";
-        $SQL .= "FROM productos AS p ";        
-        $SQL .= "LEFT JOIN productos_categorias AS pc ";        
-        $SQL .= "    ON p.id = pc.producto_id ";        
-        $SQL .= "WHERE pc.categoria_id IS NULL ";        
+        $SQL  = "SELECT p.id, p.id_externo, p.nombre, p.precio, p.habilitado ";
+        $SQL .= "FROM productos AS p ";
+        $SQL .= "LEFT JOIN productos_categorias AS pc ";
+        $SQL .= "    ON p.id = pc.producto_id ";
+        $SQL .= "WHERE p.eliminado = 0 AND pc.categoria_id IS NULL ";
         $SQL .= "GROUP BY p.id ";
+        $SQL .= "ORDER BY p.nombre ";
+
+        $STMT = $conn->prepare($SQL);
+        
+        $STMT->execute();
+
+        return $STMT->fetchAllAssociative();
+    }
+
+    public function findSinPrecio(){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $SQL  = "SELECT p.id, p.id_externo, p.nombre, p.precio, p.habilitado ";
+        $SQL .= "FROM productos AS p ";
+        $SQL .= "WHERE p.eliminado = 0 AND p.precio = 0 ";
+        $SQL .= "GROUP BY p.id ";
+        $SQL .= "ORDER BY p.nombre ";
 
         $STMT = $conn->prepare($SQL);
         
