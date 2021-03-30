@@ -123,13 +123,16 @@ class ImportadorController extends AbstractController
 
     public function validacionMarcas($txtMarca){
         $entityManager = $this->getDoctrine()->getManager();
-        $marca = $entityManager->getRepository(Marcas::class)->findMarcaLike($txtMarca);
+        $marcasRepo = $entityManager->getRepository(Marcas::class);
+        $marca = $marcasRepo->findMarcaLike($txtMarca);
 
         if($marca === false){
             $marca = new Marcas;
             $marca->setMarca($txtMarca);
             $entityManager->persist($marca);
             $entityManager->flush();
+        }else{
+            $marca = $marcasRepo->find($marca['id']);
         }
 
         return $marca;
@@ -146,7 +149,7 @@ class ImportadorController extends AbstractController
         $prod->setMarca($marca);
         $prod->setHabilitado(1);
         $prod->setEliminado(0);
-        $entityManager->persist($marca);
+        $entityManager->persist($prod);
         $entityManager->flush();
     }
 }

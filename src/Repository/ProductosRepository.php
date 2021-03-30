@@ -68,4 +68,21 @@ class ProductosRepository extends ServiceEntityRepository
     public function crearImportado($producto){
         
     }
+
+    public function findSinCategorias(){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $SQL  = "SELECT p.id, p.id_externo, p.nombre ";
+        $SQL .= "FROM productos AS p ";        
+        $SQL .= "LEFT JOIN productos_categorias AS pc ";        
+        $SQL .= "    ON p.id = pc.producto_id ";        
+        $SQL .= "WHERE pc.categoria_id IS NULL ";        
+        $SQL .= "GROUP BY p.id ";
+
+        $STMT = $conn->prepare($SQL);
+        
+        $STMT->execute();
+
+        return $STMT->fetchAllAssociative();
+    }
 }
