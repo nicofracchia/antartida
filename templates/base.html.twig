@@ -23,6 +23,10 @@
         <div id="pestanias">{% block pestanias %}{% endblock %}</div>
         <section>
             <nav>
+                <a href='{{ path('banners_index') }}'>
+                    <img src='{{ asset('images/iconos/menu/banners.svg')}}' alt='Banners' />
+                    BANNERS
+                </a>
                 <a href='{{ path('categorias_index') }}'>
                     <img src='{{ asset('images/iconos/menu/categorias.svg')}}' alt='Categorías' />
                     CATEGORÍAS

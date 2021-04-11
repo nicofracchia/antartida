@@ -1,0 +1,28 @@
+<div class='listadoBanners'>
+    {% for b in banners %}
+        <div class='linea_banner'>
+            <input type='hidden' value='{{b.id}}' class='idBanner' />
+            <div class='cont_orden'>
+                <input type='number' step='1' name='bannerOrden[]' placeholder='Orden' value='{{b.orden}}' />
+            </div>
+            <div class='cont_imagen'>
+                <img src="{{ asset('images/banners/' ~ b.imagen)}}" alt="" />
+            </div>
+            <div class='cont_url'>
+                <input type='text' name='url[]' placeholder='URL' value='{{b.url}}' />
+            </div>
+            <div class='cont_acciones'>
+                {{ (b.habilitado == 1) ? "<span class='verde'>Banner habilitado</span><br/>" : "<span class='rojo'>Banner deshabilitado</span><br/>"}}
+                <img src="{{ asset('images/iconos/guardar_celeste.svg')}}" alt="Guardar" title='Guardar' />
+                {% if b.habilitado == 1 %}
+                    <img src="{{ asset('images/iconos/deshabilitar.svg')}}" alt="Deshabilitar" title='Deshabilitar' />
+                {% else %}
+                    <img src="{{ asset('images/iconos/tilde_verde.svg')}}" alt="Habilitar" title='Habilitar' />
+                {% endif %}
+                <img src="{{ asset('images/iconos/borrar_rojo.svg')}}" alt="Eliminar" title='Eliminar' />
+            </div>
+        </div>
+    {% else %}
+        No se encontraron banners cargados.
+    {% endfor %}
+</div>

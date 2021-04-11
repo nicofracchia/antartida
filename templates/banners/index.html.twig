@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banners - {% endblock %}
+
+{% block rutas %}<span>Banners</span>{% endblock %}
+
+{% block contenido %}
+
+    {{ include('banners/_form.html.twig') }}
+
+    {{ include('banners/_listado.html.twig') }}
+
+{% endblock %}

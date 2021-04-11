@@ -8,6 +8,7 @@
 	--blanco:#FFFFFF;
 	--verde: #0baf0f;
 	--celeste: #46b7b5;
+	--rojo: #ff3a10;
 }
 
 /***** FUENTES *****/
@@ -351,6 +352,7 @@ section nav a img{
 #container form:first-of-type div:first-of-type div input[type=date],
 #container form:first-of-type div:first-of-type div input[type=password],
 #container form:first-of-type div:first-of-type div input[type=number],
+#container form:first-of-type div:first-of-type div input[type=file],
 #container form:first-of-type div:first-of-type div select,
 #container form:first-of-type div:first-of-type div textarea{
 	font-size: 1vmax;
@@ -869,4 +871,58 @@ section nav a img{
 }
 .contenedorReportes .tablaReportes table tr:hover td{
 	background: var(--color1op);
+}
+
+/****** BANNERS ******/
+.listadoBanners{
+	display:flex;
+	flex-wrap: wrap;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+.listadoBanners input[type=text],
+.listadoBanners input[type=number]{
+	font-size: 0.7vmax;
+    color: var(--negro);
+    border: solid 1px var(--color1);
+    padding: 0.5vmax;
+    border-radius: 10px;
+    resize: none;
+    margin-right: 1vmax;
+	width:100%;
+}
+.listadoBanners .linea_banner{
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+	width:100%;
+	transition:0.3s;
+	padding:0.5vmax;
+	border-radius:10px;
+}
+.listadoBanners .linea_banner:hover{
+	background:var(--color2op);
+}
+.listadoBanners .linea_banner .cont_orden{
+	width:10%;
+	min-width:80px;
+}
+.listadoBanners .linea_banner .cont_imagen{
+	width:20%;
+}
+.listadoBanners .linea_banner .cont_imagen img{
+	max-width:100%;
+}
+.listadoBanners .linea_banner .cont_url{
+	width:25%;
+}
+.listadoBanners .linea_banner .cont_acciones{
+	text-align: right;
+}
+.listadoBanners .linea_banner .cont_acciones .verde{
+	color:var(--verde);
+}
+.listadoBanners .linea_banner .cont_acciones .rojo{
+	color:var(--rojo);
 }

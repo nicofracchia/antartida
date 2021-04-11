@@ -1,0 +1,21 @@
+<form action="{{ path('banners_nuevo') }}" method="post" enctype='multipart/form-data'>
+    <div style='border-bottom: solid 1px var(--color1);padding-bottom: 1vmax;margin-bottom: 3vmax;'>
+        <div>
+            <label for="banners_orden">Orden</label>
+            <input type="number" step='1' name="banners[orden]" id="banners_orden" placeholder="Orden" />
+        </div>
+        <div>
+            <label for="banners_imagen">Imagen</label>
+            <input type="file" name="banners[imagen]" id="banners_imagen" placeholder="Seleccione la imagen" />
+        </div>
+        <div>
+            <label for="banners_url">URL</label>
+            <input type="text" name="banners[url]" id="banners_url" placeholder="URL" />
+        </div>
+        
+        <div></div><div></div>
+        <div class="botonesFormularios">
+            <button class="btn btnGuardar" name='guardar' value='1'>Guardar</button>
+        </div>
+    </div>
+</form>
