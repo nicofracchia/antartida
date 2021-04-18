@@ -7,7 +7,9 @@ use App\Entity\Categorias;
 use App\Entity\Marcas;
 use App\Entity\ProductosCategorias;
 use App\Entity\ProductosCaracteristicas;
+use App\Entity\ProductosImagenes;
 use App\Repository\ProductosRepository;
+use App\Repository\ProductosImagenesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -226,5 +228,106 @@ class ProductosController extends AbstractController
             return $this->json($r);
         }
         return $this->render('modal/modalMarca.html.twig');
+    }
+
+    // IMAGENES
+
+    /**
+     * @Route("/imagenes/{id}", name="productos_imagenes", methods={"GET", "POST"})
+     */
+    public function imagenes(Productos $producto, ProductosImagenesRepository $ProductosImagenesRepository): Response
+    {
+        return $this->render('productos/imagenes.html.twig', [
+            'imagenes' => $ProductosImagenesRepository->findBy(['producto' => $producto],['habilitado' => 'DESC', 'orden' => 'ASC']),
+            'producto' => $producto
+        ]);
+    }
+
+    /**
+     * @Route("/imagenes/{id}/nuevo", name="productos_imagenes_nuevo", methods={"POST"})
+     */
+    public function nuevaImagen(Productos $producto, Request $request, ProductosRepository $productosRepository): Response
+    {
+        if ($this->isCsrfTokenValid('nueva_imagen_producto_'.$producto->getId(), $request->request->get('_token'))) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // SUBO IMAGEN
+            $ubicacion = $this->getParameter('kernel.project_dir').'/public/images/productos/'.$producto->getId().'/';
+            $file = $request->files->get('imagenes')['imagen'];
+            $ahora = new \DateTime();
+            $nombre = $ahora->format('U').'.'.$file->guessExtension();
+            $file->move($ubicacion, $nombre);
+
+            // GUARDO IMAGEN DE PRODUCTO
+            $productosImagenes = new ProductosImagenes;
+            $productosImagenes->setProducto($producto);
+            $productosImagenes->setOrden(intval($request->request->get('imagenes')['orden']));
+            $productosImagenes->setImagen($nombre);
+            $productosImagenes->setHabilitado(1);
+            $entityManager->persist($productosImagenes);
+            $entityManager->flush();
+            
+        }
+
+        return $this->redirectToRoute('productos_imagenes', ['id' => $producto->getId()]);
+    }
+
+    /**
+     * @Route("/imagenes/editar/{id}", name="productos_imagenes_editar", methods={"POST"})
+     */
+    public function editarImagen(ProductosImagenes $ProductosImagenes, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $ProductosImagenes->setOrden($request->request->get('orden'));
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('productos_imagenes', ['id' => $ProductosImagenes->getProducto()->getId()]);
+    }
+
+    /**
+     * @Route("/imagenes/deshabilitar/{id}", name="productos_imagenes_deshabilitar", methods={"GET"})
+     */
+    public function deshabilitar(ProductosImagenes $ProductosImagenes): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $ProductosImagenes->setHabilitado(0);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('productos_imagenes', ['id' => $ProductosImagenes->getProducto()->getId()]);
+    }
+
+    /**
+     * @Route("/imagenes/habilitar/{id}", name="productos_imagenes_habilitar", methods={"GET"})
+     */
+    public function habilitar(ProductosImagenes $ProductosImagenes): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $ProductosImagenes->setHabilitado(1);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('productos_imagenes', ['id' => $ProductosImagenes->getProducto()->getId()]);
+    }
+
+    /**
+     * @Route("/imagenes/eliminar/{id}", name="productos_imagenes_eliminar", methods={"GET"})
+     */
+    public function eliminar(ProductosImagenes $ProductosImagenes): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $idProducto = $ProductosImagenes->getProducto()->getId();
+
+        $ubicacion = $this->getParameter('kernel.project_dir').'/public/images/productos/'.$idProducto.'/';
+        $nombre = $ProductosImagenes->getImagen();
+        unlink($ubicacion.$nombre);
+        
+        $entityManager->remove($ProductosImagenes);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('productos_imagenes', ['id' => $idProducto]);
     }
 }

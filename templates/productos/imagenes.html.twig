@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos - {% endblock %}
+
+{% block rutas %}
+    Productos - <span>Imágenes</span>
+    <a href="{{ path('productos_index') }}" class='btnVolver' title="Volver al listado">
+        <img src="{{asset('images/iconos/volver.png')}}" alt="" />
+    </a>
+{% endblock %}
+
+{% block pestanias %}
+    <a href="{{ path('productos_edit', {'id': producto.id}) }}">Detalles de producto</a>
+    <a href="{{ path('productos_imagenes', {'id': producto.id}) }}" class="actual">Imágenes</a>
+{% endblock %}
+
+{% block contenido %}
+    <h1>Imágenes del producto: {{producto.nombre}}</h1>
+    
+    {{ include('productos/_form_imagenes.html.twig') }}
+
+    {{ include('productos/_listado_imagenes.html.twig') }}
+{% endblock %}

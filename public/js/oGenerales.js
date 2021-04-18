@@ -101,8 +101,22 @@ oGen.fnEliminarBanner = (el) => {
     }
 }
 
+// IMAGENES PRODUCTOS
+oGen.fnCargaClickEliminarImagenProducto = function(){
+    Array.from(document.getElementsByClassName('eliminarImagenProducto')).forEach((el) => {
+        el.addEventListener('click', () => {oGen.fnEliminarImagenProducto(el)}, false);
+    });
+}
+oGen.fnEliminarImagenProducto = (el) => {
+    let pathEliminar = el.getAttribute("data-path");
+    if(confirm(' \n\r Seguro que desea eliminar la imagen del producto? \n\r Una vez eliminada no se puede recuperar. \n\r ')){
+        window.location = pathEliminar;
+    }
+}
+
 // LOAD
 oGen.load = () => {
     oGen.fnCargaClickEliminar();
     oGen.fnCargaClickEliminarBanner();
+    oGen.fnCargaClickEliminarImagenProducto();
 }

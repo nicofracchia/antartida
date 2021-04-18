@@ -1,0 +1,17 @@
+<form action="{{ path('productos_imagenes_nuevo', {'id': producto.id}) }}" method="post" enctype='multipart/form-data'>
+    <input type='hidden' name='_token' value='{{csrf_token('nueva_imagen_producto_'~producto.id)}}' />
+    <div style='border-bottom: solid 1px var(--color1);padding-bottom: 1vmax;margin-bottom: 3vmax;'>
+        <div>
+            <label for="imagenes_orden">Orden</label>
+            <input type="number" step='1' name="imagenes[orden]" id="imagenes_orden" placeholder="Orden" />
+        </div>
+        <div>
+            <label for="imagenes_imagen">Imagen</label>
+            <input type="file" name="imagenes[imagen]" id="imagenes_imagen" placeholder="Seleccione la imagen" accept="image/*" />
+        </div>
+        <div class="botonesFormularios">
+            <label> </label>
+            <button class="btn btnGuardar" name='guardar' value='1'>Guardar</button>
+        </div>
+    </div>
+</form>
