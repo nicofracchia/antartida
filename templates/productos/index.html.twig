@@ -39,7 +39,10 @@
                 <td>{{ (producto.habilitado == 1) ? 'Habilitado' : 'Deshabilitado' }}</td>
                 <td>
                     <a href="{{ path('productos_edit', {'id': producto.id}) }}">
-                        <img src="{{asset('images/iconos/editar_off.png')}}" alt="" />
+                        <img src="{{asset('images/iconos/editar_off.png')}}" alt="" title='Editar datos del producto' />
+                    </a>
+                    <a href="{{ path('productos_imagenes', {'id': producto.id}) }}">
+                        <img src="{{asset('images/iconos/imagenes.svg')}}" alt="" title='Editar imágenes del producto' />
                     </a>
                     <img 
                         class='iconoBorrarListados' 
@@ -49,12 +52,8 @@
                         data-mensaje="Seguro que desea eliminar este producto?" 
                         data-token="{{csrf_token('delete_'~producto.id)}}" 
                         data-ruta="{{ path('productos_delete', {'id': producto.id}) }}"
+                        title="Eliminar producto"
                     />
-                    {#
-                    <a href="{{ path('productos_imagenes', {'id': producto.id}) }}" title='Imagenes'>
-                        <img src="{{asset('images/iconos/imagenes.svg')}}" alt="" />
-                    </a>
-                    #}
                 </td>
             </tr>
         {% else %}
