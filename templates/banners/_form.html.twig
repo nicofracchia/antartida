@@ -1,4 +1,5 @@
 <form action="{{ path('banners_nuevo') }}" method="post" enctype='multipart/form-data'>
+    <input type='hidden' name='_token' value='{{csrf_token('nuevo_banner')}}' />
     <div style='border-bottom: solid 1px var(--color1);padding-bottom: 1vmax;margin-bottom: 3vmax;'>
         <div>
             <label for="banners_orden">Orden</label>
@@ -6,7 +7,7 @@
         </div>
         <div>
             <label for="banners_imagen">Imagen</label>
-            <input type="file" name="banners[imagen]" id="banners_imagen" placeholder="Seleccione la imagen" />
+            <input type="file" name="banners[imagen]" id="banners_imagen" placeholder="Seleccione la imagen" accept="image/*" />
         </div>
         <div>
             <label for="banners_url">URL</label>

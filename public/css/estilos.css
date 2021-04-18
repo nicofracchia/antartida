@@ -2,8 +2,10 @@
 :root{
     --color1:#29235c;
 	--color1op: #29235c94;
+	--color1opclarito: #29235c1a;
     --color2:#911818;
 	--color2op: #91181894;
+	--color2opclarito: #9118181a;
     --negro:#2f2f31;
 	--blanco:#FFFFFF;
 	--verde: #0baf0f;
@@ -360,6 +362,8 @@ section nav a img{
 	border:solid 1px var(--color1);
 	padding:0.5vmax;
 	border-radius:10px;
+}
+#container form:first-of-type div:first-of-type div textarea{
 	resize:vertical;
 }
 #container form:first-of-type div:first-of-type div input[type=date]{
@@ -902,10 +906,10 @@ section nav a img{
 	border-radius:10px;
 }
 .listadoBanners .linea_banner:hover{
-	background:var(--color2op);
+	background:var(--color2opclarito);
 }
 .listadoBanners .linea_banner .cont_orden{
-	width:10%;
+	width:10% !important;
 	min-width:80px;
 }
 .listadoBanners .linea_banner .cont_imagen{
@@ -920,9 +924,18 @@ section nav a img{
 .listadoBanners .linea_banner .cont_acciones{
 	text-align: right;
 }
+.listadoBanners .linea_banner .cont_acciones img{
+	width:30px;
+	cursor:pointer;
+}
 .listadoBanners .linea_banner .cont_acciones .verde{
 	color:var(--verde);
 }
 .listadoBanners .linea_banner .cont_acciones .rojo{
 	color:var(--rojo);
+}
+.listadoBanners .linea_banner .cont_acciones button{
+	cursor:pointer;
+	border:none;
+	background:none;
 }

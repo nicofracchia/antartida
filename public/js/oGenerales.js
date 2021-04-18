@@ -88,7 +88,21 @@ oGen.fnGuardaMarcaModal = function(){
     })
 }
 
+// BANNERS
+oGen.fnCargaClickEliminarBanner = function(){
+    Array.from(document.getElementsByClassName('eliminarBanner')).forEach((el) => {
+        el.addEventListener('click', () => {oGen.fnEliminarBanner(el)}, false);
+    });
+}
+oGen.fnEliminarBanner = (el) => {
+    let pathEliminar = el.getAttribute("data-path");
+    if(confirm(' \n\r Seguro que desea eliminar el banner? \n\r Una vez eliminado no se puede recuperar. \n\r ')){
+        window.location = pathEliminar;
+    }
+}
+
 // LOAD
 oGen.load = () => {
     oGen.fnCargaClickEliminar();
+    oGen.fnCargaClickEliminarBanner();
 }
