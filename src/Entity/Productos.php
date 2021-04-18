@@ -64,10 +64,16 @@ class Productos
      */
     private $precio;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductosImagenes::class, mappedBy="producto")
+     */
+    private $productosImagenes;
+
     public function __construct()
     {
         $this->productosCategorias = new ArrayCollection();
         $this->productosCaracteristicas = new ArrayCollection();
+        $this->productosImagenes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +221,36 @@ class Productos
     public function setPrecio(?float $precio): self
     {
         $this->precio = $precio;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductosImagenes[]
+     */
+    public function getProductosImagenes(): Collection
+    {
+        return $this->productosImagenes;
+    }
+
+    public function addProductosImagene(ProductosImagenes $productosImagene): self
+    {
+        if (!$this->productosImagenes->contains($productosImagene)) {
+            $this->productosImagenes[] = $productosImagene;
+            $productosImagene->setProducto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductosImagene(ProductosImagenes $productosImagene): self
+    {
+        if ($this->productosImagenes->removeElement($productosImagene)) {
+            // set the owning side to null (unless already changed)
+            if ($productosImagene->getProducto() === $this) {
+                $productosImagene->setProducto(null);
+            }
+        }
 
         return $this;
     }

@@ -9,6 +9,11 @@
     </a>
 {% endblock %}
 
+{% block pestanias %}
+    <a href="{{ path('productos_edit', {'id': producto.id}) }}" class="actual">Detalles de producto</a>
+    <a href="{{ path('productos_imagenes', {'id': producto.id}) }}">Imágenes</a>
+{% endblock %}
+
 {% block contenido %}
     <h1>Editar producto</h1>
     
