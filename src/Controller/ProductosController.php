@@ -71,7 +71,11 @@ class ProductosController extends AbstractController
 
             $this->guardaProductosCaracteristicas($producto, $request->request->get('caracteristicasClave'), $request->request->get('caracteristicasValor'));
 
-            return $this->redirectToRoute('productos_index');
+            if($request->request->get('guardar') == 1)
+                return $this->redirectToRoute('productos_index');
+            if($request->request->get('guardar') == 2)
+                return $this->redirectToRoute('productos_imagenes', ['id' => $producto->getId()]);
+
         }
 
         return $this->render('productos/new.html.twig', [
@@ -109,7 +113,10 @@ class ProductosController extends AbstractController
 
             $this->guardaProductosCaracteristicas($producto, $request->request->get('caracteristicasClave'), $request->request->get('caracteristicasValor'));
 
-            return $this->redirectToRoute('productos_index');
+            if($request->request->get('guardar') == 1)
+                return $this->redirectToRoute('productos_index');
+            if($request->request->get('guardar') == 2)
+                return $this->redirectToRoute('productos_imagenes', ['id' => $producto->getId()]);
         }
 
         return $this->render('productos/edit.html.twig', [
